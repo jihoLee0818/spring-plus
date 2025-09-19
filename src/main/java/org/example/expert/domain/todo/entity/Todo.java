@@ -23,15 +23,15 @@ public class Todo extends Timestamped {
     private String contents;
     private String weather;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "todo", cascade = CascadeType.REMOVE)
-    private List<Comment> comments = new ArrayList<>();
+    private final List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "todo")
-    private List<Manager> managers = new ArrayList<>();
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.PERSIST)
+    private final List<Manager> managers = new ArrayList<>();
 
     public Todo(String title, String contents, String weather, User user) {
         this.title = title;
